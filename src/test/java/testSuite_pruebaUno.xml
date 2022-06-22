@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite de pruebas" verbose="1" >
+    <test name="Casos de prueba">
+        <classes>
+            <class name="PruebaUno_automatizacion"/>
+        </classes>
+    </test>
+</suite>

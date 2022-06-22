@@ -116,8 +116,6 @@ public class Tarea_bci_automatizacion {
         WebElement robotConfirm = driver.findElement(By.xpath("//body/div[@id='__next']/main[1]/div[1]/div[1]/form[1]/div[8]/div[2]"));
         Assert.assertEquals("Confirma que no eres un robot.",robotConfirm.getText());
 
-
-
-
+        driver.close();
     }
 }
