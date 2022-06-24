@@ -10,7 +10,7 @@ public class SeleniumDemo {
         //Crear ruta para apuntar al wevbdriver
         /*String path = Paths.get(System.getProperty("user.dir"),"\\src\\main\\resources\\drivers\\chromedriver.exe").toString();
         System.setProperty("webdriver.chrome.driver",path);*/
-        System.setProperty("webdriver.chrome.driver","C:\\Users\\Matias.Rojas\\Documents\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver","C:\\Users\\matias.rojas\\Documents\\chromedriver.exe");
 
         //Crear un objeto de tipo webdriver
         WebDriver driver = new ChromeDriver();

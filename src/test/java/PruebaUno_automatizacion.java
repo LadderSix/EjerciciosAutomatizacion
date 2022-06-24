@@ -1,5 +1,5 @@
 import net.bytebuddy.description.type.TypeDescription;
-import org.junit.BeforeClass;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -20,8 +21,9 @@ public class PruebaUno_automatizacion {
 
     @BeforeClass
     public void preparacionClase(){
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Matias.Rojas\\Documents\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\matias.rojas\\Documents\\chromedriver.exe");
     }
+
     @BeforeMethod
     public void precondicionesTests() throws InterruptedException {
         driver = new ChromeDriver();
