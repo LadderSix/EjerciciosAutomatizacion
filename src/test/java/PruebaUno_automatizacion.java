@@ -94,17 +94,21 @@ public class PruebaUno_automatizacion {
         btnAceptar.click();
     }
     @Test
-    public void atc03_eliminarCuenta(){
+    public void atc03_eliminarCuenta() throws InterruptedException {
         atc01_iniciarSesion();
+        Thread.sleep(10000);
 
-        By cuentas = By.tagName("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]/div[1]/div[1]/div[2]/tabset[1]/div[1]/tab[1]");
+        By cuentas = By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]");
         WebElement miTabla = driver.findElement(cuentas);
+        System.out. println(miTabla.getText());
 
-        List<WebElement> misCuentas = miTabla.findElements(By.xpath("//div[contains(@class,\\'li\\')]"));
+        List<WebElement> misCuentas = miTabla.findElements(By.tagName("ul"));
 
         for (int i = 0; i < misCuentas.size(); i++ ) {
-
+            //System.out. println(misCuentas);
             if (miTabla.getText().equals("562267260251")) {
+                System.out.println(miTabla.getText());
+
                 By eliminar = By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]/div[1]/div[1]/div[2]/tabset[1]/div[1]/tab[1]/private-dashboard-panel-abc[1]/div[1]/div[2]/ul[1]/li[5]/private-bill-card[1]/div[2]/div[1]/div[1]/span[1]/ul[1]/li[2]/img[1]");
                 WebElement btnEliminar = wait.until(ExpectedConditions.elementToBeClickable(eliminar));
                 btnEliminar.click();
@@ -114,7 +118,7 @@ public class PruebaUno_automatizacion {
         }
 
     }
-    @Test
+    /*@Test
     public void atc04_pagoRapido(){
 
         By pagoRapido = By.xpath("//a[contains(text(),'Pago Rápido')]");
@@ -148,7 +152,7 @@ public class PruebaUno_automatizacion {
         btnAceptar.click();
 
     }
-    /*@Test
+    @Test
     public void atc05_pagoMultiple(){
         atc01_iniciarSesion();
 
