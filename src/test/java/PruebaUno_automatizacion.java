@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import javax.swing.*;
 import java.lang.ref.WeakReference;
 import java.nio.file.Paths;
 import java.util.List;
@@ -31,7 +32,7 @@ public class PruebaUno_automatizacion {
         driver = new ChromeDriver();
         url = "https://www.servipag.com";
         driver.get(url);
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver,20);
     }
@@ -42,7 +43,7 @@ public class PruebaUno_automatizacion {
 
     @Test
     public void atc01_iniciarSesion(){
-        By miServipag = By.xpath("//*[@id=\"single-spa-application:@servipagFenix/header\"]/header-root/header-home/header/div/div/nav[3]/ul/li[1]/a");
+        By miServipag = By.xpath("//a[contains(text(),'Mi Servipag')]");
         WebElement btnMiServipag = wait.until(ExpectedConditions.elementToBeClickable(miServipag));
         btnMiServipag.click();
 
@@ -96,24 +97,43 @@ public class PruebaUno_automatizacion {
     @Test
     public void atc03_eliminarCuenta() throws InterruptedException {
         atc01_iniciarSesion();
-        Thread.sleep(10000);
+        Thread.sleep(6000);
 
-        By cuentas = By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]");
-        WebElement miTabla = driver.findElement(cuentas);
-        System.out. println(miTabla.getText());
+        /*List<WebElement> datos = driver.findElements(By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]"));
 
-        List<WebElement> misCuentas = miTabla.findElements(By.tagName("ul"));
+        for (WebElement objDatos : datos){
+            String strDato = objDatos.getText();
+            System.out.println(strDato);
 
-        for (int i = 0; i < misCuentas.size(); i++ ) {
-            //System.out. println(misCuentas);
-            if (miTabla.getText().equals("562267260251")) {
-                System.out.println(miTabla.getText());
-
-                By eliminar = By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]/div[1]/div[1]/div[2]/tabset[1]/div[1]/tab[1]/private-dashboard-panel-abc[1]/div[1]/div[2]/ul[1]/li[5]/private-bill-card[1]/div[2]/div[1]/div[1]/span[1]/ul[1]/li[2]/img[1]");
+            if (strDato.equals("562267260251")){
+                By eliminar = By.xpath("//*[@id=\"single-spa-application:@private/dashboard\"]/private-dashboard/private-dashboard-dashboard/div/div[1]/div/div/private-dashboard-panel-list/tabset/div/tab[2]/div/div[2]/div[1]/div[2]/private-bill-card[1]/div[2]/div/div[1]/span/ul/li[2]");
                 WebElement btnEliminar = wait.until(ExpectedConditions.elementToBeClickable(eliminar));
                 btnEliminar.click();
-
                 break;
+            }else{
+                System.out.println("Error dato no es correcto");
+            }
+        }*/
+        By datos = By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]");
+        WebElement misDatos = driver.findElement(datos);
+        System.out.println(misDatos.getText());
+
+        List<WebElement> misCuentas = driver.findElements(By.xpath("//div[@class=\"id col-3 text-break\"]"));
+
+        for (int i = 0; i < misCuentas.size(); i++ ) {
+            if (misCuentas.get(i).getText().equals("562267260251")) {
+                System.out.println(misCuentas.get(i).getText());
+
+                Thread.sleep(2000);
+                By eliminar = By.xpath("//li[@class=\"delete\"]");
+                WebElement btnEliminar = wait.until(ExpectedConditions.elementToBeClickable(eliminar));
+
+                btnEliminar.click();
+                System.out.println("Click realizado !");
+                break;
+            } else {
+                System.out.println(misCuentas.get(i).getText());
+                System.out.println("Error dato no es correcto");
             }
         }
 
