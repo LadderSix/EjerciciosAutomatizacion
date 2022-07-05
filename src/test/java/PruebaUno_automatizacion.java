@@ -31,7 +31,7 @@ public class PruebaUno_automatizacion {
         driver.get(url);
         Thread.sleep(2000);
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver,20);
+        wait = new WebDriverWait(driver,30);
     }
     @AfterMethod
     public void posTests(){
@@ -39,7 +39,7 @@ public class PruebaUno_automatizacion {
     }
 
     @Test
-    public void atc01_iniciarSesion(){
+    public void atc01_iniciarSesion() throws InterruptedException {
         By miServipag = By.xpath("//a[contains(text(),'Mi Servipag')]");
         WebElement btnMiServipag = wait.until(ExpectedConditions.elementToBeClickable(miServipag));
         btnMiServipag.click();
@@ -56,12 +56,34 @@ public class PruebaUno_automatizacion {
         WebElement btnIngresar = wait.until(ExpectedConditions.elementToBeClickable(ingresar));
         btnIngresar.click();
 
-        /*driver.get("https://portal.servipag.com/private/profile");
-        By miRut = By.xpath("//input[@formcontrolname='rut']");
-        Assert.assertEquals("17555387-8", driver.findElement(miRut).getText());*/
+        Thread.sleep(4000);
+        driver.get("https://portal.servipag.com/private/profile");
+        Thread.sleep(2000);
+
+        By titulo = By.xpath("//h4[contains(text(),'Hola Matias')]");
+        WebElement txtTitulo = driver.findElement(titulo);
+        System.out.println(txtTitulo.getText());
+
+        By miRut = By.cssSelector("#rut");
+        WebElement txtRut = driver.findElement(miRut);
+        System.out.println(txtRut.getText());
+
+        By miNombre = By.cssSelector("#nombre");
+        WebElement txtNombre = driver.findElement(miNombre);
+        System.out.println(txtNombre.getText());
+
+        By miApellido = By.cssSelector("#apellido");
+        WebElement txtApellido = driver.findElement(miApellido);
+        System.out.println(txtApellido.getText());
+
+
+        Assert.assertEquals("Matias", txtNombre.getText());
+        Assert.assertEquals("Rojas Arias", txtApellido.getText());
+        Assert.assertEquals("17.555.387-8", txtNombre.getText());
+        Assert.assertEquals("Hola Matias",txtTitulo.getText());
     }
     @Test
-    public void atc02_agregarCuenta(){
+    public void atc02_agregarCuenta() throws InterruptedException {
         atc01_iniciarSesion();
 
         By inscribirCuenta = By.xpath("//a[contains(text(),'Inscribir cuentas')]");
@@ -94,27 +116,23 @@ public class PruebaUno_automatizacion {
     @Test
     public void atc03_eliminarCuenta() throws InterruptedException {
         atc01_iniciarSesion();
-        Thread.sleep(6000);
-
-        By datos = By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]");
-        WebElement misDatos = driver.findElement(datos);
-        System.out.println(misDatos.getText());
+        Thread.sleep(4000);
 
         List<WebElement> misCuentas = driver.findElements(By.xpath("//div[@class=\"id col-3 text-break\"]"));
 
         for (int i = 0; i < misCuentas.size(); i++ ) {
             if (misCuentas.get(i).getText().equals("562267260251")) {
                 System.out.println(misCuentas.get(i).getText());
-                Thread.sleep(1000);
+
                 By borrar = By.xpath("//li[@class=\"delete\"]");
                 WebElement btnBorrar = wait.until(ExpectedConditions.elementToBeClickable(borrar));
-
+                Thread.sleep(1000);
                 btnBorrar.click();
                 System.out.println("Click realizado !");
 
                 By eliminar = By.xpath("//button[contains(text(),'Eliminar')]");
                 WebElement btnEliminar = wait.until(ExpectedConditions.elementToBeClickable(eliminar));
-
+                Thread.sleep(1000);
                 btnEliminar.click();
                 System.out.println("Cuenta eliminada. !");
 
@@ -132,12 +150,7 @@ public class PruebaUno_automatizacion {
         By pagoRapido = By.xpath("//a[contains(text(),'Pago Rápido')]");
         WebElement btnPagoRapido = wait.until(ExpectedConditions.elementToBeClickable(pagoRapido));
         btnPagoRapido.click();
-        Thread.sleep(3000);
-
-        //By datos = By.xpath("//body[1]/main[1]/div[1]/div[3]/payment-root[1]/app-listado-servicios[1]/div[2]/div[1]/div[1]/div[1]/div[1]");
-        //By datos = By.xpath("//div[@class=\"grid-2-3\"]");
-        //WebElement misDatos = driver.findElement(datos);
-        //System.out.println(misDatos.getText());
+        Thread.sleep(3500);
 
         List<WebElement> servicios = driver.findElements(By.tagName("lib-payment-card"));
 
@@ -145,10 +158,7 @@ public class PruebaUno_automatizacion {
             if (servicios.get(i).getText().equals("Internet")) {
                 System.out.println(servicios.get(i).getText());
 
-                By miServicio = By.xpath("//body[1]/main[1]/div[1]/div[3]/payment-root[1]/app-listado-servicios[1]/div[2]/div[1]/div[1]/div[1]/div[1]/lib-payment-card[23]/app-category[1]/div[1]/a[1]/div[1]");
-                WebElement btnMiServicio = wait.until(ExpectedConditions.elementToBeClickable(miServicio));
-                btnMiServicio.click();
-
+                servicios.get(i).click();
                 System.out.println(".......!");
                 break;
             } else {
@@ -183,10 +193,29 @@ public class PruebaUno_automatizacion {
         btnAceptar.click();
 
     }
-    /*@Test
-    public void atc05_pagoMultiple(){
+    @Test
+    public void atc05_pagoMultiple() throws InterruptedException {
         atc01_iniciarSesion();
+        Thread.sleep(4000);
+        List<WebElement> misCuentas = driver.findElements(By.xpath("//div[@class=\"id col-3 text-break\"]"));
 
-    }*/
+        for (int i = 0; i < misCuentas.size(); i++ ) {
+            if (misCuentas.get(i).getText().equals("175553878")) {
+                System.out.println(misCuentas.get(i).getText());
+
+                By agregar = By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]/div[1]/div[1]/div[2]/tabset[1]/div[1]/tab[1]/private-dashboard-panel-abc[1]/div[1]/div[2]/ul[1]/li[2]/private-bill-card[1]/div[2]/div[1]/div[4]/span[1]/show-cost[1]/div[1]");
+                WebElement btnAgregar = wait.until(ExpectedConditions.elementToBeClickable(agregar));
+
+                btnAgregar.click();
+                System.out.println("Click realizado !");
+                break;
+            } else {
+                System.out.println(misCuentas.get(i).getText());
+                System.out.println("Error dato no es correcto");
+            }
+        }
+
+
+    }
 
 }
