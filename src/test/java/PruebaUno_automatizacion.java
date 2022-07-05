@@ -1,8 +1,5 @@
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -99,21 +96,6 @@ public class PruebaUno_automatizacion {
         atc01_iniciarSesion();
         Thread.sleep(6000);
 
-        /*List<WebElement> datos = driver.findElements(By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]"));
-
-        for (WebElement objDatos : datos){
-            String strDato = objDatos.getText();
-            System.out.println(strDato);
-
-            if (strDato.equals("562267260251")){
-                By eliminar = By.xpath("//*[@id=\"single-spa-application:@private/dashboard\"]/private-dashboard/private-dashboard-dashboard/div/div[1]/div/div/private-dashboard-panel-list/tabset/div/tab[2]/div/div[2]/div[1]/div[2]/private-bill-card[1]/div[2]/div/div[1]/span/ul/li[2]");
-                WebElement btnEliminar = wait.until(ExpectedConditions.elementToBeClickable(eliminar));
-                btnEliminar.click();
-                break;
-            }else{
-                System.out.println("Error dato no es correcto");
-            }
-        }*/
         By datos = By.xpath("//body[1]/main[1]/div[1]/div[1]/div[2]/div[2]/div[1]/private-dashboard[1]/private-dashboard-dashboard[1]/div[1]/div[1]");
         WebElement misDatos = driver.findElement(datos);
         System.out.println(misDatos.getText());
@@ -123,13 +105,19 @@ public class PruebaUno_automatizacion {
         for (int i = 0; i < misCuentas.size(); i++ ) {
             if (misCuentas.get(i).getText().equals("562267260251")) {
                 System.out.println(misCuentas.get(i).getText());
+                Thread.sleep(1000);
+                By borrar = By.xpath("//li[@class=\"delete\"]");
+                WebElement btnBorrar = wait.until(ExpectedConditions.elementToBeClickable(borrar));
 
-                Thread.sleep(2000);
-                By eliminar = By.xpath("//li[@class=\"delete\"]");
+                btnBorrar.click();
+                System.out.println("Click realizado !");
+
+                By eliminar = By.xpath("//button[contains(text(),'Eliminar')]");
                 WebElement btnEliminar = wait.until(ExpectedConditions.elementToBeClickable(eliminar));
 
                 btnEliminar.click();
-                System.out.println("Click realizado !");
+                System.out.println("Cuenta eliminada. !");
+
                 break;
             } else {
                 System.out.println(misCuentas.get(i).getText());
@@ -138,26 +126,49 @@ public class PruebaUno_automatizacion {
         }
 
     }
-    /*@Test
-    public void atc04_pagoRapido(){
+    @Test
+    public void atc04_pagoRapido() throws InterruptedException{
 
         By pagoRapido = By.xpath("//a[contains(text(),'Pago Rápido')]");
         WebElement btnPagoRapido = wait.until(ExpectedConditions.elementToBeClickable(pagoRapido));
         btnPagoRapido.click();
+        Thread.sleep(3000);
 
-        By seccionInternet = By.xpath("//body[1]/main[1]/div[1]/div[3]/payment-root[1]/app-listado-servicios[1]/div[2]/div[1]/div[1]/div[1]/div[1]/lib-payment-card[23]");
-        WebElement internet = wait.until(ExpectedConditions.elementToBeClickable(seccionInternet));
-        internet.click();
+        //By datos = By.xpath("//body[1]/main[1]/div[1]/div[3]/payment-root[1]/app-listado-servicios[1]/div[2]/div[1]/div[1]/div[1]/div[1]");
+        //By datos = By.xpath("//div[@class=\"grid-2-3\"]");
+        //WebElement misDatos = driver.findElement(datos);
+        //System.out.println(misDatos.getText());
 
-        By seleccionar_empresa = By.xpath("//body[1]/main[1]/div[1]/div[3]/payment-root[1]/app-listado-servicios[1]/div[2]/div[1]/div[1]/div[1]/div[1]/lib-payment-card[23]/app-select-company[1]/div[1]/div[1]/div[2]/form[1]/section[1]/div[1]/div[1]/div[1]/select[1]");
+        List<WebElement> servicios = driver.findElements(By.tagName("lib-payment-card"));
 
-        if (driver.findElement(seleccionar_empresa).isDisplayed()){
-            WebElement listaEmpresas = driver.findElement(seleccionar_empresa);
-            Select dropdown = new Select(listaEmpresas);
-            dropdown.selectByVisibleText("Movistar Hogar/Negocio Internet");
+        for (int i = 0; i < servicios.size(); i++ ) {
+            if (servicios.get(i).getText().equals("Internet")) {
+                System.out.println(servicios.get(i).getText());
+
+                By miServicio = By.xpath("//body[1]/main[1]/div[1]/div[3]/payment-root[1]/app-listado-servicios[1]/div[2]/div[1]/div[1]/div[1]/div[1]/lib-payment-card[23]/app-category[1]/div[1]/a[1]/div[1]");
+                WebElement btnMiServicio = wait.until(ExpectedConditions.elementToBeClickable(miServicio));
+                btnMiServicio.click();
+
+                System.out.println(".......!");
+                break;
+            } else {
+                System.out.println(servicios.get(i).getText());
+                System.out.println("Error");
+            }
+        }
+
+        By select = By.tagName("select");
+
+        if (driver.findElement(select).isDisplayed()){
+            WebElement listadoServicios = driver.findElement(select);
+            System.out.println(listadoServicios.getText());
+
+            Select option = new Select(listadoServicios);
+            option.selectByVisibleText("Movistar Hogar/Negocio Internet");
         } else {
             System.out.println("Error!");
         }
+
 
         By numeroCuenta = By.tagName("input");
         WebElement input_numeroCuenta = wait.until(ExpectedConditions.elementToBeClickable(numeroCuenta));
@@ -172,7 +183,7 @@ public class PruebaUno_automatizacion {
         btnAceptar.click();
 
     }
-    @Test
+    /*@Test
     public void atc05_pagoMultiple(){
         atc01_iniciarSesion();
 
