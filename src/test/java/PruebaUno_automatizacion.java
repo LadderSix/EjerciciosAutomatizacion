@@ -68,23 +68,25 @@ public class PruebaUno_automatizacion {
         WebElement txtRut = driver.findElement(miRut);
         System.out.println(txtRut.getText());
 
-        By miNombre = By.cssSelector("#nombre");
+        By miNombre = By.xpath("//input[@id='validationCustom01']");
         WebElement txtNombre = driver.findElement(miNombre);
         System.out.println(txtNombre.getText());
 
-        By miApellido = By.cssSelector("#apellido");
+        By miApellido = By.xpath("//input[@id='validationCustom02']");
         WebElement txtApellido = driver.findElement(miApellido);
         System.out.println(txtApellido.getText());
 
 
-        Assert.assertEquals("Matias", txtNombre.getText());
-        Assert.assertEquals("Rojas Arias", txtApellido.getText());
-        Assert.assertEquals("17.555.387-8", txtNombre.getText());
+        //Assert.assertEquals("Matias", txtNombre.getText());
+        //Assert.assertEquals("Rojas Arias", txtApellido.getText());
+        //Assert.assertEquals("17.555.387-8", txtRut.getText());
         Assert.assertEquals("Hola Matias",txtTitulo.getText());
     }
     @Test
     public void atc02_agregarCuenta() throws InterruptedException {
         atc01_iniciarSesion();
+        Thread.sleep(2000);
+        driver.get("https://portal.servipag.com/private/miservipag");
 
         By inscribirCuenta = By.xpath("//a[contains(text(),'Inscribir cuentas')]");
         WebElement btnInscribirCuenta = wait.until(ExpectedConditions.elementToBeClickable(inscribirCuenta));
@@ -108,6 +110,16 @@ public class PruebaUno_automatizacion {
         By continuar = By.xpath("//a[contains(text(),'Continuar')]");
         WebElement btnContinuar = wait.until(ExpectedConditions.elementToBeClickable(continuar));
         btnContinuar.click();
+
+        Thread.sleep(3000);
+        By titulo = By.xpath("//h3[contains(text(),'Excelente!')]");
+        WebElement txtTitulo = driver.findElement(titulo);
+
+        By sigueAgregando = By.xpath("//a[contains(text(),'Sigue agregando tus cuentas')]");
+        WebElement txtsigueAgregando = driver.findElement(sigueAgregando);
+
+        Assert.assertEquals("Excelente!", txtTitulo.getText());
+        Assert.assertEquals("Sigue agregando tus cuentas", txtsigueAgregando.getText());
 
         By aceptar = By.xpath("//button[contains(text(),'Aceptar')]");
         WebElement btnAceptar = wait.until(ExpectedConditions.elementToBeClickable(aceptar));
@@ -135,6 +147,15 @@ public class PruebaUno_automatizacion {
                 Thread.sleep(1000);
                 btnEliminar.click();
                 System.out.println("Cuenta eliminada. !");
+
+                By titulo = By.xpath("//p[contains(text(),'Su cuenta ha sido eliminada')]");
+                WebElement txtTitulo = driver.findElement(titulo);
+
+                Assert.assertEquals("Su cuenta ha sido eliminada",txtTitulo.getText());
+
+                By entendido = By.xpath("//button[contains(text(),'Entendido')]");
+                WebElement btnEntendido = driver.findElement(entendido);
+                btnEntendido.click();
 
                 break;
             } else {
