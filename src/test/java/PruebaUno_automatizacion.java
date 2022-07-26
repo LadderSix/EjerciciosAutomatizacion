@@ -217,6 +217,7 @@ public class PruebaUno_automatizacion {
     @Test
     public void atc05_pagoMultiple() throws InterruptedException {
         atc01_iniciarSesion();
+        driver.get("https://portal.servipag.com/private/miservipag");
         Thread.sleep(4000);
         List<WebElement> misCuentas = driver.findElements(By.xpath("//div[@class=\"id col-3 text-break\"]"));
 
