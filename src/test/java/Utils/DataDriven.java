@@ -1,7 +1,9 @@
 package Utils;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -9,20 +11,33 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class DataDriven {
-    public static void main(String[] args) throws IOException {
+    public static ArrayList<String> getData(String nombreCasoPrueba){
 
-        //Instanciamo un objeto tipo file con la ruta del excel
-        FileInputStream file = new FileInputStream
-                ("C:\\Users\\matias.rojas\\IdeaProjects\\EjerciciosAutomatizacion\\src\\main\\resources\\Data\\DataDriven.xlsx");
+        ArrayList<String> a =  new ArrayList<>();
 
-        //Instancia un objeto de tipo excel en base a la fila
-        XSSFWorkbook excel = new XSSFWorkbook(file);
+        //Instanciamos un objeto tipo file con la ruta del excel
+        FileInputStream file = null;
+        try {
+            file = new FileInputStream
+                    ("C:\\Users\\matias.rojas\\IdeaProjects\\EjerciciosAutomatizacion\\src\\main\\resources\\Data\\DataDriven.xlsx");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //Instanciamos un objeto de tipo excel en base a la fila
+        XSSFWorkbook excel = null;
+        try {
+            excel = new XSSFWorkbook(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         int sheets = excel.getNumberOfSheets();
-        System.out.println(sheets);
+        System.out.println("Cantidad de Hojas: " + sheets);
 
         for(int i = 0; i < sheets ; i++){
             if (excel.getSheetName(i).equalsIgnoreCase("Datos")){
@@ -35,13 +50,41 @@ public class DataDriven {
                 //Iteramos en la celda
                 Iterator<Cell> celda = fila.cellIterator();
 
+                int k = 0;
+                int columna = 0;
+
                 while(celda.hasNext()){
                     Cell celdaSeleccionada = celda.next();
-                    //System.out.println(celdaSeleccionada.getStringCellValue());
-                    if(celdaSeleccionada.getStringCellValue().equalsIgnoreCase("TestCase"));
-                    //identifique la celda con el titulo de la columna con los nombres de los TCs
+                    System.out.println(celdaSeleccionada.getStringCellValue());
+                    if(celdaSeleccionada.getStringCellValue().equalsIgnoreCase("TestCase")){
+                        //identifique la celda con el titulo de la columna con los nombres de los TCs
+                        columna = k;
+                    }
+                    k++;
+                }
+
+                while (filas.hasNext()){
+                    Row r = filas.next();
+                    if (r.getCell(columna).getStringCellValue().equalsIgnoreCase(nombreCasoPrueba)){
+
+                        //Iteramos en la celda
+                        Iterator<Cell> cv = r.cellIterator();
+
+                        while (cv.hasNext()){
+                            Cell cell = cv.next();
+                            //System.out.println(cell.getCellType());
+                            if (cell.getCellType() == CellType.STRING){
+                                //System.out.println(cell.getStringCellValue());
+                                a.add(cell.getStringCellValue());
+                            }else if(cell.getCellType() == CellType.NUMERIC){
+                                //System.out.println(NumberToTextConverter.toText(cell.getNumericCellValue()));
+                                a.add(NumberToTextConverter.toText(cell.getNumericCellValue()));
+                            }
+                        }
+                    }
                 }
             }
         }
+        return a;
     }
 }
